@@ -16,38 +16,33 @@ def printBoard():
     print(r)
 
 
-turns = 0
-
-
-def player_turn(turn_chr):
-    while True:
-        global turns  # Hate it
-        row = input(f'{turn_chr}, Enter row: ')
-        column = input(f'{turn_chr}, Enter column: ')
-        try:
-            row = int(row)
-            column = int(column)
-        except ValueError:
-            print('Ввод некорректных данных!')
-            break
-
+def player_turn(turn_chr, turns):
+    row = input(f'{turn_chr}, Enter row: ')
+    column = input(f'{turn_chr}, Enter column: ')
+    try:
+        int(row)
+        int(column)
+    except ValueError:
+        print('Ввод некорректных данных!')
+        player_turn(turn_chr, turns)
+    else:
         row = int(row)-1
         column = int(column)-1
 
-        if row <= 3 and column <= 3:
+        if row <= 2 and column <= 2:
             if board[row][column] != ' ':
                 printBoard()
                 print('Нельзя!')
+                player_turn(turn_chr, turns)
             board[row][column] = turn_chr
             printBoard()
 
             turns += 1
             if turns > 4:
                 check_win()
-            break
         else:
             print('Ввод неправильного столба или строки')
-            break
+            player_turn(turn_chr, turns)
 
 
 def check_win():  # Переделать с проверкой на X и O (all(X), all(O))
@@ -81,18 +76,25 @@ def check_win():  # Переделать с проверкой на X и O (all(
 def win(plr):
     restart = input(f'{plr} Сыграем еще раз?(y/n)\n')
     if restart == 'y' or restart == 'Y':
+        global board
+        board = [[' ', ' ', ' '],
+                 [' ', ' ', ' '],
+                 [' ', ' ', ' ']]
         start()
+
     else:
         exit()
 
 
 def start():
     printBoard()
-    for i in range(10):
+    i = 0
+    while True:
         if i % 2 == 0:
-            player_turn('X')
+            player_turn('X', i)
         else:
-            player_turn('O')
+            player_turn('O', i)
+        i += 1
 
 
 start()
