@@ -39,38 +39,24 @@ def player_turn(turn_chr, turns):
 
             turns += 1
             if turns > 4:
-                check_win()
+                check_win(turn_chr)
         else:
             print('Ввод неправильного столба или строки')
             player_turn(turn_chr, turns)
 
 
-def check_win():  # Переделать с проверкой на X и O (all(X), all(O))
-    if all([True if board[i][i] == 'X' else False for i in range(3)]):
-        win('Игрок X победил!')
+def check_win(turn_chr):
+    if all([True if board[i][i] == turn_chr else False for i in range(3)]):
+        win(f'Игрок {turn_chr} победил!')
 
-    elif all([True if board[i][2-i] == 'X' else False for i in range(3)]):
-        win('Игрок X победил!')
+    elif all([True if board[i][2-i] == turn_chr else False for i in range(3)]):
+        win(f'Игрок {turn_chr} победил!')
 
-    elif any([True if all([True if board[i][j] == 'X' else False for j in range(3)]) else False for i in range(3)]):
-        win('Игрок X победил!')
+    elif any([True if all([True if board[i][j] == turn_chr else False for j in range(3)]) else False for i in range(3)]):
+        win(f'Игрок {turn_chr} победил!')
 
-    elif any([True if all([True if board[j][i] == 'X' else False for j in range(3)]) else False for i in range(3)]):
-        win('Игрок X победил!')
-
-    # ----------------------------------
-
-    elif all([True if board[i][i] == 'O' else False for i in range(3)]):
-        win('Игрок O победил!')
-
-    elif all([True if board[i][2-i] == 'O' else False for i in range(3)]):
-        win('Игрок O победил!')
-
-    elif any([True if all([True if board[i][j] == 'O' else False for j in range(3)]) else False for i in range(3)]):
-        win('Игрок O победил!')
-
-    elif any([True if all([True if board[j][i] == 'O' else False for j in range(3)]) else False for i in range(3)]):
-        win('Игрок O победил!')
+    elif any([True if all([True if board[j][i] == turn_chr else False for j in range(3)]) else False for i in range(3)]):
+        win(f'Игрок {turn_chr} победил!')
 
 
 def win(plr):
